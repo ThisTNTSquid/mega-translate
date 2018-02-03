@@ -15,15 +15,15 @@ function startTransalte(content, from, to, rounds) {
   count = count + 1;
   translate(content, { from: from, to: to }).then(res => {
     if (count <= rounds) {
-      console.log(`${count}/${rounds} ${from} -> ${to} : \n ${res.text}`);
+      console.log(`${count}/${rounds} ${from} -> ${to} : \n${res.text}\n`);
       startTransalte(res.text, to, langs[getRand(langs.length - 1)], rounds);
     } else {
       translate(res.text,{from: to,to:origin_lang}).then(final=>{
-        console.log(`[!!] Completed: \n ${final.text}`)
+        console.log(`[!!] Completed: \n${final.text}`)
       })
       // console.log(`Complete: ${from} -> ${to} : ${res.text}`);
     }
   });
 }
-console.log(`Initial: ${init}`)
+console.log(`Initial: \n${init}`)
 startTransalte(init, origin_lang, langs[getRand(langs.length - 1)], rounds);
