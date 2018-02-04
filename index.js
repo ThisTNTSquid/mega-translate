@@ -17,18 +17,26 @@ function startTransalte(content, from, to, rounds) {
   translate(content, { from: from, to: to })
     .then(res => {
       if (count <= rounds) {
-        console.log(`${count}/${rounds} ${from} -> ${to} : \n${res.text}\n`);
+        console.log(
+          `${count}/${rounds} ${from} -> ${to} : \n------------------------------\n${
+            res.text
+          }\n------------------------------\n`
+        );
         startTransalte(res.text, to, langs[getRand(langs.length - 1)], rounds);
       } else {
         translate(res.text, { from: to, to: config.origin_lang }).then(
           final => {
-            console.log(`[!!] Completed: \n${final.text}`);
+            console.log(
+              `[!!] Completed [!!]:\n**************************** \n${
+                final.text
+              }\n****************************`
+            );
             fs.writeFile(config.output, final.text, "utf-8", () => {
-              console.log("\n===============");
+              // console.log("\n===============");
               console.log(
                 `> Your interesting output has been saved to '${config.output}'`
               );
-              console.log("===============");
+              // console.log("===============");
             });
           }
         );
@@ -39,7 +47,9 @@ function startTransalte(content, from, to, rounds) {
       console.log(err);
     });
 }
-console.log(`Initial: \n${init}`);
+console.log(
+  `Initial: \n------------------------------\n${init}\n------------------------------\n`
+);
 startTransalte(
   init,
   config.origin_lang,
