@@ -1,6 +1,7 @@
 const translate = require("google-translate-api");
-const config = require("./config"); //todo chane this line to read file with path provided in config
-const init = require("fs").readFileSync(config.input,'utf-8');
+const config = require("./config");
+const fs = require("fs");
+const init = fs.readFileSync(config.input, "utf-8");
 const langs = Object.keys(require("./utils/language"));
 // const engIndex = langs.findIndex(e => e == "en");
 
@@ -22,6 +23,13 @@ function startTransalte(content, from, to, rounds) {
         translate(res.text, { from: to, to: config.origin_lang }).then(
           final => {
             console.log(`[!!] Completed: \n${final.text}`);
+            fs.writeFile(config.output, final.text, "utf-8", () => {
+              console.log("\n===============");
+              console.log(
+                `> Your interesting output has been saved to '${config.output}'`
+              );
+              console.log("===============");
+            });
           }
         );
         // console.log(`Complete: ${from} -> ${to} : ${res.text}`);

@@ -1,5 +1,6 @@
 module.exports={
   input: "./input.txt",
-  rounds: 10,
+  output: "./output.txt",
+  rounds: 3,
   origin_lang: 'en'
 }
