@@ -3,8 +3,8 @@ const config = require("./config");
 const fs = require("fs");
 const init = fs.readFileSync(config.input, "utf-8");
 const langs = Object.keys(require("./utils/language"));
-// const Logger = require('./utils/logger')
-// const logger = new Logger()
+const Logger = require('./utils/logger')
+const logger = new Logger()
 // const engIndex = langs.findIndex(e => e == "en");
 
 const getRand = require("./utils/random");
@@ -19,25 +19,26 @@ function startTransalte(content, from, to, rounds) {
   translate(content, { from: from, to: to })
     .then(res => {
       if (count <= rounds) {
-        console.log(
+        logger.log(
           `${count}/${rounds} ${from} -> ${to} : \n------------------------------\n${
             res.text
-          }\n------------------------------\n`
+          }\n------------------------------\n\n`
         );
         startTransalte(res.text, to, langs[getRand(langs.length - 1)], rounds);
       } else {
         translate(res.text, { from: to, to: config.origin_lang }).then(
           final => {
-            console.log(
+            logger.log(
               `[!!] Completed [!!]:\n**************************** \n${
                 final.text
-              }\n****************************`
+              }\n****************************\n`
             );
             fs.writeFile(config.output, final.text, "utf-8", () => {
               // console.log("\n===============");
-              console.log(
+              logger.log(
                 `> Your interesting output has been saved to '${config.output}'`
               );
+              logger.complete()
               // console.log("===============");
             });
           }
@@ -46,11 +47,11 @@ function startTransalte(content, from, to, rounds) {
       }
     })
     .catch(err => {
-      console.log(err);
+      logger.log(err);
     });
 }
-console.log(
-  `Initial: \n------------------------------\n${init}\n------------------------------\n`
+logger.log(
+  `Initial: \n------------------------------\n${init}\n------------------------------\n\n`
 );
 startTransalte(
   init,
