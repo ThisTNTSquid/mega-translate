@@ -3,6 +3,8 @@ const config = require("./config");
 const fs = require("fs");
 const init = fs.readFileSync(config.input, "utf-8");
 const langs = Object.keys(require("./utils/language"));
+// const Logger = require('./utils/logger')
+// const logger = new Logger()
 // const engIndex = langs.findIndex(e => e == "en");
 
 const getRand = require("./utils/random");
